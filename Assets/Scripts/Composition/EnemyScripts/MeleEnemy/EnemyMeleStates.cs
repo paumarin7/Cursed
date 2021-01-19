@@ -10,9 +10,13 @@ public class EnemyMeleStates : MonoBehaviour
     public EnemyMeleMovement enemyMeleMovement;
     public MovementManager movementManager;
     private GameObject player;
+    public GameObject bed;
+    public GameObject wheat;
     public Animator animations;
+    public bool inWheatFarm = false;
     public Stats Stats;
     private Delay delay;
+    private GameManager gameManager;
 
     [SerializeField]
     private bool canShoot;
@@ -23,6 +27,8 @@ public class EnemyMeleStates : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        wheat = GameObject.FindGameObjectWithTag("Wheat");
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         Stats = GetComponent<Stats>();
         enemyMeleAnimations = GetComponent<EnemyAnimations>();
         enemyMeleMovement = GetComponent<EnemyMeleMovement>();
@@ -35,6 +41,9 @@ public class EnemyMeleStates : MonoBehaviour
 
         meleStateMachine = new StateMachine();
 
+        var moveToHouse = new MeleMoveToHouse(this);
+        var moveToWheat = new MeleMoveToWheat(this);
+        var farm = new MeleFarm(this);
         var searchPlayer = new MeleSearchPlayer(this);
         var moveToPlayer = new MeleMoveToPlayer(this);
         var returnToFirstPosition = new MeleReturnToFirstPosition(this);
@@ -43,14 +52,19 @@ public class EnemyMeleStates : MonoBehaviour
         var waitingForAttack = new MeleWaitingForAttack(this, delay);
         var death = new MeleDeath(this);
 
+
+
         meleStateMachine.AddAnyTransition(death, () => !Stats.IsAlive);
-        meleStateMachine.AddAnyTransition(moveToPlayer, () => enemyMeleMovement.hitPlayer.collider.tag == "Player" && enemyMeleMovement.playerDirection.magnitude > enemyMeleMovement.minRange);
+        meleStateMachine.AddAnyTransition(moveToPlayer, () => gameManager.fear >0 && enemyMeleMovement.hitPlayer.collider.tag == "Player" && enemyMeleMovement.playerDirection.magnitude > enemyMeleMovement.minRange);
         //   meleStateMachine.AddAnyTransition(returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
+        meleStateMachine.AddAnyTransition(farm, () => inWheatFarm);
+        meleStateMachine.AddAnyTransition(moveToHouse, () => gameManager.currentTimeOfDay >= 0.75 || gameManager.currentTimeOfDay <= 0.25);
+        meleStateMachine.AddAnyTransition(moveToWheat, () => gameManager.currentTimeOfDay >= 0.26 || gameManager.currentTimeOfDay <= 0.74 && !inWheatFarm);
+
         meleStateMachine.AddTransition(returnToSecondPosition, returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
         meleStateMachine.AddAnyTransition(returnToSecondPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && !enemyMeleMovement.Returning);
         meleStateMachine.AddAnyTransition(waitingForAttack, () => enemyMeleMovement.playerDirection.magnitude < enemyMeleMovement.minRange && !delay.IsReady);
         meleStateMachine.AddAnyTransition(attack, () => enemyMeleMovement.playerDirection.magnitude < enemyMeleMovement.minRange && delay.IsReady);
-
 
         At(returnToSecondPosition, returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
         meleStateMachine.SetState(returnToFirstPosition);
