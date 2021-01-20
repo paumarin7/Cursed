@@ -1821,8 +1821,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fear: 0
   sun: {fileID: 705507994}
-  secondsInFullDay: 109000
-  currentTimeOfDay: 0.37
+  secondsInFullDay: 60
+  currentTimeOfDay: 0.294
   timeMultiplier: 1
 --- !u!4 &705232178
 Transform:
