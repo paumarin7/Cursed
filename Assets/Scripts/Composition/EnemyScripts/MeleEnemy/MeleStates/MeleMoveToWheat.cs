@@ -25,7 +25,7 @@ public class MeleMoveToWheat : IState
     public void Tick()
     {
 
-        if (!enemyMovementMele.inWheatFarm && playerDirection.magnitude <= 2.5)
+        if (!enemyMovementMele.inWheatFarm && playerDirection.magnitude <= 1.5)
         {
             Debug.Log(playerDirection.magnitude);
             enemyMovementMele.inWheatFarm = true;

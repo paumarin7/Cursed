@@ -72,6 +72,19 @@ public class EnemyMeleStates : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Wheat")
+        {
+            inWheatFarm = true;
+        }
+        else
+        {
+            inWheatFarm = false;
+        }
+       
+    }
+
     // Update is called once per frame
     void Update()
     {

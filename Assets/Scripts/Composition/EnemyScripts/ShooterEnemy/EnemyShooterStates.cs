@@ -13,7 +13,12 @@ public class EnemyShooterStates : MonoBehaviour, IEnemyStates
     private GameObject player;
     public Animator animations;
     public Stats Stats;
+    private GameManager gameManager;
     private Delay delay;
+    [SerializeField]
+    private GameObject forest;
+    [SerializeField]
+    private GameObject bed;
 
     [SerializeField]
     private bool canShoot;
@@ -24,7 +29,8 @@ public class EnemyShooterStates : MonoBehaviour, IEnemyStates
     // Start is called before the first frame update
     void Start()
     {
- 
+
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         Stats = GetComponent<Stats>();
         enemyShooterAnimations = GetComponent<EnemyShooterAnimations>();
         enemyShooterMovement = GetComponent<EnemyShooterMovement>();
@@ -39,6 +45,9 @@ public class EnemyShooterStates : MonoBehaviour, IEnemyStates
 
         var searchPlayer = new ShooterSearchPlayer(this);
         var moveToPlayer = new ShooterMoveToPlayer(this);
+        var moveToForest = new HunterMoveToForest(this);
+        var moveToBed = new HunterMoveToHouse(this);
+
         var returnToFirstPosition = new ShooterReturnToFirstPosition(this);
         var returnToSecondPosition = new ShooterReturnToSecondPosition(this);
         var attack = new ShooterAttack(this, delay);
@@ -46,7 +55,7 @@ public class EnemyShooterStates : MonoBehaviour, IEnemyStates
         var death = new ShooterDeath(this);
 
         shooterStateMachine.AddAnyTransition(death, () => !Stats.IsAlive);
-        shooterStateMachine.AddAnyTransition(moveToPlayer, () => enemyShooterMovement.hitPlayer.collider.tag == "Player" && enemyShooterMovement.playerDirection.magnitude > enemyShooterMovement.maxRange);
+        shooterStateMachine.AddAnyTransition(moveToPlayer, () =>gameManager.fear>0 && enemyShooterMovement.hitPlayer.collider.tag == "Player" && enemyShooterMovement.playerDirection.magnitude > enemyShooterMovement.maxRange);
         //   meleStateMachine.AddAnyTransition(returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
         shooterStateMachine.AddTransition(returnToSecondPosition, returnToFirstPosition, () => enemyShooterMovement.hitPlayer.collider.tag != "Player" && enemyShooterMovement.Returning);
         shooterStateMachine.AddAnyTransition(returnToSecondPosition, () => enemyShooterMovement.hitPlayer.collider.tag != "Player" && !enemyShooterMovement.Returning);
