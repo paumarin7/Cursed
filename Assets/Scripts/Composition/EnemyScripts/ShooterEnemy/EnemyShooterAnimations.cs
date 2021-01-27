@@ -12,6 +12,9 @@ public class EnemyShooterAnimations : MonoBehaviour
     private bool isFollowing = false;
     [SerializeField]
 
+
+    public GameObject Almorir;
+
     private bool isReturningFirstPosition;
 
      public Animator animator;
@@ -88,7 +91,7 @@ public class EnemyShooterAnimations : MonoBehaviour
                     var direction = (enemyShooterStates.Player.transform.position - transform.position).normalized;
                     animator.SetFloat("x", direction.x);
                     animator.SetLayerWeight(0, 0f);
-                    animator.SetLayerWeight(1, 1f);
+
                     animator.SetBool("Attacking", true);
                 }
                 else if (idle)
@@ -110,6 +113,13 @@ public class EnemyShooterAnimations : MonoBehaviour
             animator.SetBool("Death", true);
         }
 
+    }
+
+    public void almorir()
+    {
+        GameObject dead = Instantiate(Almorir, this.transform.position, Quaternion.identity);
+
+        Destroy(this.gameObject);
     }
 
 }

@@ -15,7 +15,7 @@ public class HunterMoveToForest : IState
 
     public void OnEnter()
     {
-        enemyShooterStates.enemyShooterMovement.playerDirection = enemyShooterStates.Player.transform.position - enemyShooterStates.transform.position;
+        playerDirection = (enemyShooterStates.forest.transform.position - enemyShooterStates.transform.position);
     }
 
     public void OnExit()
@@ -23,16 +23,17 @@ public class HunterMoveToForest : IState
 
         //   enemyShooterStates.enemyShooterAnimations.IsFollowing = false;
     }
-
     public void Tick()
     {
-        enemyShooterStates.enemyShooterAnimations.IsFollowing = true;
-        Debug.Log("following player");
-        //  animator.SetBool("Idle",false);
-        enemyShooterStates.enemyShooterMovement.followPlayer = new Vector3((enemyShooterStates.Player.transform.position.x - enemyShooterStates.transform.position.x), 0, (enemyShooterStates.Player.transform.position.z - enemyShooterStates.transform.position.z)).normalized * enemyShooterStates.Stats.Speed;
+
+        if (!enemyShooterStates.inForest && playerDirection.magnitude <= 1.5)
+        {
+
+            enemyShooterStates.inForest = true;
+
+        }
+        enemyShooterStates.enemyShooterMovement.followPlayer = new Vector3((enemyShooterStates.forest.transform.position.x - enemyShooterStates.transform.position.x), 0, (enemyShooterStates.forest.transform.position.z - enemyShooterStates.transform.position.z)).normalized * enemyShooterStates.Stats.Speed;
         enemyShooterStates.enemyShooterMovement.controller.Move(enemyShooterStates.enemyShooterMovement.followPlayer * Time.deltaTime);
-        enemyShooterStates.enemyShooterMovement.LastPosition = new Vector3(enemyShooterStates.Player.transform.position.x, enemyShooterStates.transform.position.y, enemyShooterStates.Player.transform.position.z);
-        enemyShooterStates.enemyShooterMovement.FirstPosition = enemyShooterStates.transform.position;
 
     }
 }

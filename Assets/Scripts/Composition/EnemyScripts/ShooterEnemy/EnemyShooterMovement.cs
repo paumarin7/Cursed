@@ -18,6 +18,7 @@ public class EnemyShooterMovement : MonoBehaviour
     public CharacterController controller;
     public RaycastHit hitPlayer;
 
+
     public float minRange;
     public float maxRange;
 
@@ -37,7 +38,6 @@ public class EnemyShooterMovement : MonoBehaviour
 
         InitialPosition = transform.position;
         controller = GetComponent<CharacterController>();
-
         enemyShooterStates = GetComponent<EnemyShooterStates>();
 
     }
@@ -52,12 +52,13 @@ public class EnemyShooterMovement : MonoBehaviour
     }
     void Start()
     {
-        SetMinRange(enemyShooterStates.Stats.Distance);
-        SetMaxRange(enemyShooterStates.Stats.Distance+2);
+
     }
 
     void FixedUpdate()
     {
+        SetMinRange(enemyShooterStates.Stats.Distance);
+        SetMaxRange(enemyShooterStates.Stats.Distance + 2);
         if (Vector2.Distance(transform.position, FirstPosition) < 0.03f)
         {
             Returning = false;
@@ -67,6 +68,7 @@ public class EnemyShooterMovement : MonoBehaviour
             Returning = true;
         }
         Physics.Raycast(transform.position, playerDirection, out hitPlayer, 50);
+
         Debug.DrawRay(transform.position, playerDirection, Color.black);
 
     }

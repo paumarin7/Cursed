@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class WeaponDirectionManager : MonoBehaviour
 {
-
+    [SerializeField]
     private Vector3 shootDirection;
+    [SerializeField]
     private float attackSpeed;
+    [SerializeField]
     private float damage;
+    [SerializeField]
     private string hitted;
 
     public void SetDamage(float damage)
@@ -43,7 +46,7 @@ public class WeaponDirectionManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         IDamageable trigger = other.GetComponent<IDamageable>();
-        if (other.tag == hitted || other.tag == "Bullet")
+        if (other.tag == hitted || other.tag == "Bullet" || other.tag == "Forest")
         {
            
         }

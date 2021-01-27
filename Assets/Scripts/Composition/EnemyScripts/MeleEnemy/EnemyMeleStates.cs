@@ -57,14 +57,14 @@ public class EnemyMeleStates : MonoBehaviour
         meleStateMachine.AddAnyTransition(death, () => !Stats.IsAlive);
         meleStateMachine.AddAnyTransition(moveToPlayer, () => gameManager.fear >0 && enemyMeleMovement.hitPlayer.collider.tag == "Player" && enemyMeleMovement.playerDirection.magnitude > enemyMeleMovement.minRange);
         //   meleStateMachine.AddAnyTransition(returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
+        meleStateMachine.AddAnyTransition(waitingForAttack, () => enemyMeleMovement.playerDirection.magnitude < enemyMeleMovement.minRange && !delay.IsReady);
+        meleStateMachine.AddAnyTransition(attack, () => enemyMeleMovement.playerDirection.magnitude < enemyMeleMovement.minRange && delay.IsReady);
 
         meleStateMachine.AddAnyTransition(moveToHouse, () => gameManager.currentTimeOfDay >= 0.75 || gameManager.currentTimeOfDay <= 0.25);
         meleStateMachine.AddAnyTransition(moveToWheat, () => (gameManager.currentTimeOfDay >= 0.26 || gameManager.currentTimeOfDay <= 0.74) && !inWheatFarm);
         meleStateMachine.AddAnyTransition(farm, () => inWheatFarm);
         meleStateMachine.AddTransition(returnToSecondPosition, returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
         meleStateMachine.AddAnyTransition(returnToSecondPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && !enemyMeleMovement.Returning);
-        meleStateMachine.AddAnyTransition(waitingForAttack, () => enemyMeleMovement.playerDirection.magnitude < enemyMeleMovement.minRange && !delay.IsReady);
-        meleStateMachine.AddAnyTransition(attack, () => enemyMeleMovement.playerDirection.magnitude < enemyMeleMovement.minRange && delay.IsReady);
 
         At(returnToSecondPosition, returnToFirstPosition, () => enemyMeleMovement.hitPlayer.collider.tag != "Player" && enemyMeleMovement.Returning);
         meleStateMachine.SetState(returnToFirstPosition);
@@ -83,6 +83,15 @@ public class EnemyMeleStates : MonoBehaviour
             inWheatFarm = false;
         }
        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "House")
+        {
+
+            Stats.Health =10;
+        }
     }
 
     // Update is called once per frame

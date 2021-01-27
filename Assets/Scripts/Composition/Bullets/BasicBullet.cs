@@ -65,7 +65,6 @@ public class BasicBullet : MonoBehaviour, IShootable
 
         Debug.DrawRay(transform.position, enemyTransform, Color.red, 1f);
 
-
         imageSprite = Resources.Load<Sprite>("Bullets/Bullet");
         if(GetComponent<SpriteRenderer>() == null)
         {
@@ -73,6 +72,8 @@ public class BasicBullet : MonoBehaviour, IShootable
         else
         {
             GetComponent<SpriteRenderer>().sprite = imageSprite;
+            GetComponent<SpriteRenderer>().sortingOrder = 1;
+
         }
     }
 

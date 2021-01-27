@@ -7,6 +7,10 @@ TagManager:
   - Wall
   - Enemy
   - Wheat
+  - Forest
+  - Hunt
+  - Meat
+  - House
   layers:
   - Default
   - TransparentFX

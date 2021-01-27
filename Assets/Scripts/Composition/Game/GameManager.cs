@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
 
-
-
+    public GameObject playerHealthBarUi;
+    [SerializeField]
+    public  SoundHandler sh;
 
     [SerializeField]
     public  int fear;
-
-
+    [SerializeField]
+    GameObject player;
     //Start Ciclo dia noche #DN
     public Light sun;
     public float secondsInFullDay = 120f;
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
     public float currentTimeOfDay = 0;
     [HideInInspector]
     public float timeMultiplier = 1f;
+
+    public bool vps = false;
 
     float sunInitialIntensity;
     //End Ciclo dia noche \#DN
@@ -41,11 +44,26 @@ public class GameManager : MonoBehaviour
             currentTimeOfDay = 0;
         }
         // \#DN
-
+       playerHealthBarUi.GetComponent<Image>().fillAmount = player.GetComponent<Stats>().Health / player.GetComponent<Stats>().MaxHealth;
+        if (!vps)
+        {
+            vps = true;
+            StartCoroutine(VidaPorSegundo());
+        }
+  
 
 
     }
 
+
+    public IEnumerator VidaPorSegundo()
+    {
+
+        player.GetComponent<Stats>().TakeHealth(1);
+        yield return new WaitForSeconds(1);
+        vps = false;
+
+    }
 
 
     // #DN

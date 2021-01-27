@@ -27,7 +27,7 @@ public class Wheat : MonoBehaviour
 
     IEnumerator Countdown()
     {
-       int seconds = Random.Range(3, 5);
+       int seconds = Random.Range(30, 60);
         while ( true)
         {
             yield return new WaitForSeconds(seconds);

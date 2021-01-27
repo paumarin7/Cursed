@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stats : MonoBehaviour, IDamageable
 {
@@ -65,6 +66,11 @@ public class Stats : MonoBehaviour, IDamageable
         else
         {
             IsAlive=true;
+        }
+
+        if (!isAlive && this.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }

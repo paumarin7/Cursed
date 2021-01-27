@@ -15,6 +15,7 @@ internal class ShooterMoveToPlayer:IState
 
     public void OnEnter()
     {
+
         enemyShooterStates.enemyShooterMovement.playerDirection = enemyShooterStates.Player.transform.position - enemyShooterStates.transform.position;
     }
 

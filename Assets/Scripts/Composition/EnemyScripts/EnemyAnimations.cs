@@ -10,6 +10,9 @@ public class EnemyAnimations : MonoBehaviour
     [SerializeField]
     private bool isAlive = true;
 
+
+    public GameObject Almorir;
+
     private bool isFollowing;
     private bool isReturningFirstPosition;
     private bool isReturningInitialPosition;
@@ -103,6 +106,8 @@ public class EnemyAnimations : MonoBehaviour
         }
         else
         {
+            Debug.Log("G");
+
             var direction = (enemyMeleStates.Player.transform.position - transform.position).normalized;
             animator.SetFloat("x", direction.x);
             animator.SetLayerWeight(0, 0f);
@@ -110,5 +115,12 @@ public class EnemyAnimations : MonoBehaviour
             animator.SetBool("Death", true);
         }
         
+    }
+
+    public void almorir()
+    {
+        GameObject dead = Instantiate(Almorir, this.transform.position, Quaternion.identity);
+
+        Destroy(this.gameObject);
     }
 }

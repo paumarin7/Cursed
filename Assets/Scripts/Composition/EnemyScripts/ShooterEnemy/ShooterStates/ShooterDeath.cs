@@ -18,6 +18,7 @@
 
     public void Tick()
     {
+
         enemyShooterStates.enemyShooterAnimations.IsAlive = false;
     }
 }
