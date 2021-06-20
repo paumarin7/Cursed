@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerHealthBarUi;
     [SerializeField]
     public  SoundHandler sh;
+   
 
     [SerializeField]
     public  int fear;
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         fear = 0;
-
+        
         // #DN
         sunInitialIntensity = sun.intensity;
     }
@@ -50,8 +51,8 @@ public class GameManager : MonoBehaviour
             vps = true;
             StartCoroutine(VidaPorSegundo());
         }
-  
 
+        
 
     }
 

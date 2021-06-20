@@ -21,6 +21,8 @@ public class Stats : MonoBehaviour, IDamageable
     private float gravity;
     [SerializeField]
     private float distance;
+    [SerializeField]
+    public static float points;
 
 
     float maxHealth;
@@ -54,12 +56,14 @@ public class Stats : MonoBehaviour, IDamageable
     void Start()
     {
         MaxHealth = health;
+        points = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0)
+        points += Time.deltaTime;
+        if (health <= 0)
         {
             IsAlive = false;
         }
@@ -70,7 +74,10 @@ public class Stats : MonoBehaviour, IDamageable
 
         if (!isAlive && this.gameObject.tag == "Player")
         {
+            PlayerPrefs.SetFloat("Points", points);
             SceneManager.LoadScene(0);
+
+
         }
     }
 }
